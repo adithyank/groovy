@@ -3861,4 +3861,480 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 
         return self.toString().matches("\\s*");
     }
+
+	/**
+	 * Returns the last <code>num</code> elements from this CharSequence.
+	 * <pre class="groovyTestCase">
+	 * def text = "Groovy"
+	 * assert text.takeRight( 0 ) == ''
+	 * assert text.takeRight( 2 ) == 'vy'
+	 * assert text.takeRight( 7 ) == 'Groovy'
+	 * </pre>
+	 *
+	 * @param self the original CharSequence
+	 * @param num  the number of chars to take from this CharSequence from the right
+	 * @return a CharSequence consisting of the last <code>num</code> chars,
+	 *         or else the whole CharSequence if it has less than <code>num</code> elements.
+	 */
+	public static CharSequence takeRight(CharSequence self, int num)
+    {
+    	if (num < 0)
+    		return self.subSequence(0, 0);
+
+	    int begin = Math.max(0, self.length() - num);
+	    return self.subSequence(begin, self.length());
+    }
+
+	/**
+	 * A GString variant of the equivalent CharSequence method {@link #takeRight(GString, int)}
+	 *
+	 * @param self the original GString
+	 * @param num  the number of chars to take from this GString from the right
+	 * @return a String consisting of the last <code>num</code> chars,
+	 *         or else the whole GString if it has less than <code>num</code> elements.
+	 */
+	public static String takeRight(GString self, int num)
+	{
+		return (String) takeRight(self.toString(), num);
+	}
+
+	/**
+	 * Returns the {@code CharSequence} that exists after the first occurrence of the given
+	 * {@code searchString} in this CharSequence
+	 *
+	 * <pre class="groovyTestCase">
+	 * def text = "Groovy development. Groovy team"
+	 * assert text.after( 'Groovy' )           == ' development. Groovy team'
+	 * assert text.after( 'team' )             == ''
+	 * assert text.after( '' )                 == ''
+	 * assert text.after( 'Unavailable text' ) == ''
+	 * assert text.after( null )               == ''
+	 * </pre>
+	 *
+	 * @param self the original CharSequence
+	 * @param searchString CharSequence that is searched in this CharSequence
+	 * @return CharSequence that is after the given searchString and empty string if it does not exist
+	 */
+	public static CharSequence after(CharSequence self, CharSequence searchString)
+	{
+		if (searchString == null || searchString.toString().isEmpty() || self.length() <= searchString.length())
+			return self.subSequence(0, 0);
+
+		String s = self.toString();
+
+		int index = s.indexOf(searchString.toString());
+
+		return (index == -1) ? self.subSequence(0, 0) : self.subSequence(index + searchString.length(), self.length());
+	}
+
+	/**
+	 * A GString variant of the equivalent CharSequence method {@link #after(CharSequence, CharSequence)}
+	 *
+	 * @param self the original CharSequence
+	 * @param searchString CharSequence that is searched in this CharSequence
+     * @return CharSequence that is after the given searchString and empty string if it does not exist
+	 */
+	public static String after(GString self, CharSequence searchString)
+	{
+		return (String) after(self.toString(), searchString);
+	}
+
+	/**
+	 * Returns the {@code CharSequence} that exists before the first occurrence of the given
+	 * {@code searchString} in this CharSequence
+	 *
+	 * <pre class="groovyTestCase">
+	 * def text = "Groovy development. Groovy team"
+	 *
+	 * assert text.before( ' Groovy ' )         == 'Groovy development.'
+	 * assert text.before( ' ' )                == 'Groovy'
+	 * assert text.before( 'Unavailable text' ) == ''
+	 * assert text.before( null )               == ''
+	 * </pre>
+	 *
+	 * @param self the original CharSequence
+	 * @param searchString CharSequence that is searched in this CharSequence
+	 * @return CharSequence that is before the given searchString
+	 */
+	public static CharSequence before(CharSequence self, CharSequence searchString)
+	{
+		if (searchString == null || searchString.toString().isEmpty() || self.length() <= searchString.length())
+			return self.subSequence(0, 0);
+
+		String s = self.toString();
+
+		int index = s.indexOf(searchString.toString());
+
+		return (index == -1) ? self.subSequence(0, 0) : self.subSequence(0, index);
+	}
+
+	/**
+	 * A GString variant of the equivalent CharSequence method {@link #before(CharSequence, CharSequence)}
+	 *
+	 * @param self the original CharSequence
+	 * @param searchString CharSequence that is searched in this CharSequence
+	 * @return CharSequence that is before the given searchString
+	 */
+	public static String before(GString self, String searchString)
+	{
+		return (String) before(self.toString(), searchString);
+	}
+
+	/**
+	 * The method returns new CharSequence after removing the left {@code num} chars. Returns empty String if the
+	 * {@code num} is greater than the length of the CharSequence
+	 *
+	 * <pre class="groovyTestCase">
+	 * def text = "groovy"
+	 *
+	 * assert text.stripLeft(  3 ) == 'ovy'
+	 * assert text.stripLeft(  6 ) == ''
+	 * assert text.stripLeft(  0 ) == 'groovy'
+	 * assert text.stripLeft( -1 ) == ''
+	 * assert text.stripLeft( 10 ) == ''
+	 *
+	 * 	</pre>
+	 *
+	 * @param self the original CharSequence
+	 * @param num number of characters
+	 * @return CharSequence after removing the left {@code num} chars and empty of the {@code num} is greater than the
+	 *         length of the CharSequence
+	 */
+	public static CharSequence stripLeft(CharSequence self, int num)
+	{
+		if (num < 0 || num >= self.length())
+			return self.subSequence(0, 0);
+
+		return takeRight(self, self.length() - num);
+	}
+
+	/**
+	 * A GString variant of the equivalent CharSequence method {@link #stripLeft(CharSequence, int)}
+	 *
+	 * @param self the original CharSequence
+	 * @param num number of characters
+	 * @return CharSequence after removing the left {@code num} chars and empty of the {@code num} is greater than the
+	 *         length of the CharSequence
+	 */
+	public static String stripLeft(GString self, int num)
+	{
+		return (String) stripLeft(self.toString(), num);
+	}
+
+	/**
+	 * The method returns new CharSequence after removing the right {@code num} chars. Returns empty String if the
+	 * {@code num} is greater than the length of the CharSequence
+	 *
+	 * <pre class="groovyTestCase">
+	 * def text = "groovy"
+	 *
+	 * assert text.stripRight(  3 ) == 'gro'
+	 * assert text.stripRight(  6 ) == ''
+	 * assert text.stripRight(  0 ) == 'groovy'
+	 * assert text.stripRight( -1 ) == ''
+	 * assert text.stripRight( 10 ) == ''
+	 *
+	 * 	</pre>
+	 *
+	 * @param self the original CharSequence
+	 * @param num number of characters
+	 * @return CharSequence after removing the right {@code num} chars and empty of the {@code num} is greater than the
+	 *         length of the CharSequence
+	 */
+	public static CharSequence stripRight(CharSequence self, int num)
+	{
+		if (num < 0 || num >= self.length())
+			return self.subSequence(0, 0);
+
+		return take(self, self.length() - num);
+	}
+
+	/**
+	 * A GString variant of the equivalent CharSequence method {@link #stripRight(CharSequence, int)}
+	 *
+	 * @param self the original CharSequence
+	 * @param num number of characters
+	 * @return CharSequence after removing the right {@code num} chars and empty of the {@code num} is greater than the
+	 *         length of the CharSequence
+	 */
+	public static String stripRight(GString self, int num)
+	{
+		return (String) stripRight(self.toString(), num);
+	}
+
+	/**
+	 * Returns the CharSequence that is in between the first occurrence of the given {@code from} and {@code to}
+	 * CharSequences and empty if the unavailable inputs are given
+	 *
+	 * <pre class="groovyTestCase">
+	 * def text = "Groovy"
+	 *
+	 * assert text.between( 'r', 'v' ) == 'oo'
+	 * assert text.between( 'r', 'z' ) == ''
+	 * assert text.between( 'a', 'r' ) == ''
+	 *
+	 * 	</pre>
+	 *
+	 * @param self the original CharSequence
+	 * @param from beginning of search
+	 * @param to end of search
+	 * @return the CharSequence that is in between the given two CharSequences and empty if the unavailable inputs are
+	 * 	       given
+	 *
+	 * @see #between(CharSequence, CharSequence, CharSequence, int)
+	 */
+	public static CharSequence between(CharSequence self, CharSequence from, CharSequence to)
+	{
+		if (from == null || to == null || from.length() == 0 || to.length() == 0 || from.length() > self.length() || to.length() > self.length())
+			return self.subSequence(0, 0);
+
+		String s = self.toString();
+		String f = from.toString();
+
+		int fi = s.indexOf(f);
+
+		if (fi == -1)
+			return self.subSequence(0, 0);
+
+		String t = to.toString();
+
+		int ti = s.indexOf(t, fi + from.length());
+
+		if (ti == -1)
+			return self.subSequence(0, 0);
+
+		return self.subSequence(fi + from.length(), ti);
+	}
+
+	/**
+	 * Method to take the characters between the first occurrence of the two subsequent {@code enclosure} strings
+	 *
+	 * <pre class="groovyTestCase">
+	 * def text = "name = 'some name'"
+	 *
+	 * assert text.between( "'" ) == 'some name'
+	 * assert text.between( 'z' ) == ''
+	 *
+	 * </pre>
+	 *
+	 * @param self the original CharSequence
+	 * @param enclosure Enclosure String
+	 * @return characters between the 2 subsequent {@code enclosure} strings
+	 * @see #between(CharSequence, CharSequence, int)
+	 */
+	public static CharSequence between(CharSequence self, CharSequence enclosure)
+	{
+		return between(self, enclosure, enclosure);
+	}
+
+	/**
+	 * A GString variant of the equivalent CharSequence method {@link #between(CharSequence, CharSequence, CharSequence)}
+	 *
+	 * @param self the original CharSequence
+	 * @param from beginning of search
+	 * @param to end of search
+	 * @return the CharSequence that is in between the given two CharSequences and empty if the unavailable inputs are
+	 * 	       given
+	 */
+	public static String between(GString self, CharSequence from, CharSequence to)
+	{
+		return (String) between(self.toString(), from, to);
+	}
+
+	/**
+	 * A GString variant of the equivalent CharSequence method {@link #between(CharSequence, CharSequence)}
+	 *
+	 * @param self the original GString
+	 * @param enclosure Enclosure String
+	 * @return characters between the 2 subsequent {@code enclosure} strings
+	 */
+	public static String between(GString self, CharSequence enclosure)
+	{
+		return (String) between(self.toString(), enclosure);
+	}
+
+	/**
+	 * Returns the CharSequence that is in between the given the nth (specified by item) pair of
+	 * {@code from} and {@code to} CharSequences and empty if the unavailable inputs are given.
+	 *
+	 * <pre class="groovyTestCase">
+	 * def text = "t1=10 ms, t2=100 ms"
+	 *
+	 * assert text.between( '=', ' ', 0 ) == '10'
+	 * assert text.between( '=', ' ', 1 ) == '100'
+	 * assert text.between( 't1', 'z' ) == ''
+	 * </pre>
+	 *
+	 * @param self the original CharSequence
+	 * @param from beginning of search
+	 * @param to end of search
+	 * @param item nth item that is to be returned. 0 represents first one
+	 * @return the CharSequence that is in between the given the nth (specified by item) pair of
+	 * 	 {@code from} and {@code to} CharSequences and empty if the unavailable inputs are given.
+	 *
+	 * @see #between(CharSequence, CharSequence, CharSequence)
+	 */
+	public static CharSequence between(CharSequence self, CharSequence from, CharSequence to, int item)
+	{
+		if (from == null || to == null || from.length() > self.length() || to.length() > self.length() || item < 0)
+			return self.subSequence(0, 0);
+
+		if (item == 0)
+			return between(self, from, to); //better performant by reducing regex usage
+
+		Pattern pat = Pattern.compile(from + "(.*?)" + to);
+
+		Matcher matcher = pat.matcher(self);
+
+		for (int i = 0; i < item; i++)
+			matcher.find();
+
+		if (matcher.find())
+			return matcher.group(1);
+		else
+			return self.subSequence(0, 0);
+	}
+
+	/**
+	 * Method to take the characters between nth (specified by item) pair of @code enclosure} strings
+	 *
+	 * <pre class="groovyTestCase">
+     * def text = "t1='10' ms, t2='100' ms"
+     *
+     * assert text.between( "'", 0 ) == '10'
+     * assert text.between( "'", 1 ) == '100'
+     * assert text.between( "'", 2 ) == ''
+	 * </pre>
+	 *
+	 * @param self the original CharSequence
+	 * @param enclosure Enclosure String
+     * @param item nth occurrence being returned
+	 * @return characters between the nth occurrence of pair of {@code enclosure} strings
+	 * @see #between(CharSequence, CharSequence, int)
+	 */
+	public static CharSequence between(CharSequence self, CharSequence enclosure, int item)
+	{
+		return between(self, enclosure, enclosure, item);
+	}
+
+    /**
+     * A GString variant of the equivalent CharSequence method
+     * {@link #between(CharSequence, CharSequence, CharSequence, int)}
+     *
+     * @param self the original CharSequence
+     * @param from beginning of search
+     * @param to end of search
+     * @param item nth item that is to be returned. 0 represents first one
+     * @return the CharSequence that is in between the given the nth (specified by item) pair of
+     * 	 {@code from} and {@code to} CharSequences and empty if the unavailable inputs are given.
+     */
+	public static String between(GString self, CharSequence from, CharSequence to, int item)
+	{
+		return (String) between(self.toString(), from, to, item);
+	}
+
+    /**
+     * A GString variant of the equivalent CharSequence method
+     * {@link #between(CharSequence, CharSequence, int)}
+     *
+     * @param self the original CharSequence
+     * @param enclosure Enclosure String
+     * @param item nth occurrence being returned
+     * @return characters between the nth occurrence of pair of {@code enclosure} strings
+     */
+	public static String between(GString self, CharSequence enclosure, int item)
+	{
+		return between(self, enclosure, enclosure, item);
+	}
+
+    /**
+     * Checks whether this CharSequence starts with the {@code searchString} ignoring the case considerations
+     *
+     * @param self the original CharSequence
+     * @param searchString CharSequence being checked against this
+     * @return  {@code true} if the character sequence represented by the argument is a prefix of this CharSequence
+     *          ignoring the case considerations. {@code false} otherwise. Returns false if the argument is null
+     */
+	public static boolean startsWithIgnoreCase(CharSequence self, CharSequence searchString)
+	{
+		if (searchString == null || searchString.length() == 0 || self.length() < searchString.length())
+			return false;
+
+		String s = take(self.toString(), searchString.length()).toString();
+
+		return s.equalsIgnoreCase(searchString.toString());
+	}
+
+    /**
+     * A GString variant of {@link #startsWithIgnoreCase(CharSequence, CharSequence)}
+     *
+     * @param self the original CharSequence
+     * @param searchString CharSequence being checked against this
+     * @return  {@code true} if the character sequence represented by the argument is a prefix of this CharSequence
+     *          ignoring the case considerations. {@code false} otherwise. Returns false if the argument is null
+     */
+	public static boolean startsWithIgnoreCase(GString self, CharSequence searchString)
+	{
+		return startsWithIgnoreCase(self.toString(), searchString);
+	}
+
+    /**
+     * Checks whether this CharSequence ends with the {@code searchString} ignoring the case considerations
+     *
+     * @param self the original CharSequence
+     * @param searchString CharSequence bring checked against this
+     * @return  {@code true} if the character sequence represented by the argument is a suffix of this CharSequence
+     *          ignoring the case considerations. {@code false} otherwise. Returns false if the argument is null
+     */
+	public static boolean endsWithIgnoreCase(CharSequence self, CharSequence searchString)
+	{
+		if (searchString == null || searchString.length() == 0 || self.length() < searchString.length())
+			return false;
+
+		String s = takeRight(self.toString(), searchString.length()).toString();
+
+		return s.equalsIgnoreCase(searchString.toString());
+	}
+
+    /**
+     * A GString variant of {@link #endsWithIgnoreCase(CharSequence, CharSequence)}
+     *
+     * @param self the original CharSequence
+     * @param searchString CharSequence bring checked against this
+     * @return  {@code true} if the character sequence represented by the argument is a suffix of this CharSequence
+     *          ignoring the case considerations. {@code false} otherwise. Returns false if the argument is null
+     */
+	public static boolean endsWithIgnoreCase(GString self, CharSequence searchString)
+	{
+		return endsWithIgnoreCase(self.toString(), searchString);
+	}
+
+    /**
+     * Checks whether this CharSequence contains the {@code searchString} ignoring the caseConsiderations
+     *
+     * @param self the original CharSequence
+     * @param searchString CharSequence being checked against this
+     * @return  {@code true} if the character sequence represented by the argument exists in this CharSequence
+     *          ignoring the case considerations. {@code false} otherwise. Returns false if the argument is null
+     */
+	public static boolean containsIgnoreCase(CharSequence self, CharSequence searchString)
+	{
+		if (searchString == null || searchString.length() == 0 || self.length() < searchString.length())
+			return false;
+
+		return self.toString().toLowerCase().contains(searchString.toString().toLowerCase());
+	}
+
+    /**
+     * A GString variant of {@link #containsIgnoreCase(CharSequence, CharSequence)}
+     *
+     * @param self the original CharSequence
+     * @param searchString CharSequence being checked against this
+     * @return  {@code true} if the character sequence represented by the argument exists in this CharSequence
+     *          ignoring the case considerations. {@code false} otherwise. Returns false if the argument is null
+     */
+	public static boolean containsIgnoreCase(GString self, String searchString)
+	{
+		return containsIgnoreCase(self.toString(), searchString);
+	}
 }
