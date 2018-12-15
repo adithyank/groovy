@@ -1865,14 +1865,14 @@ class GroovyMethodsTest extends GroovyTestCase {
 
 				// Need toString() as CharBuffer.subSequence returns a java.nio.StringCharBuffer
 
-				assert s.after(r[0]).toString() == r[1]                //String as searchString
-				assert s.after("${r[0]}").toString() == r[1]  //GString as searchString
+				assert s.takeAfter(r[0]).toString() == r[1]                //String as searchString
+				assert s.takeAfter("${r[0]}").toString() == r[1]  //GString as searchString
 
 				if (r[0])
 				{
-					assert s.after(java.nio.CharBuffer.wrap(r[0])).toString() == r[1] //CharBuffer as searchString
-					assert s.after(new StringBuffer(r[0])).toString() == r[1]  //StringBuffer as searchString
-					assert s.after(new StringBuilder(r[0])).toString() == r[1] //StringBuilder as searchString
+					assert s.takeAfter(java.nio.CharBuffer.wrap(r[0])).toString() == r[1] //CharBuffer as searchString
+					assert s.takeAfter(new StringBuffer(r[0])).toString() == r[1]  //StringBuffer as searchString
+					assert s.takeAfter(new StringBuilder(r[0])).toString() == r[1] //StringBuilder as searchString
 				}
 			}
 		}
@@ -1907,21 +1907,21 @@ class GroovyMethodsTest extends GroovyTestCase {
 
 				// Need toString() as CharBuffer.subSequence returns a java.nio.StringCharBuffer
 
-				assert s.before(r[0]).toString() == r[1]                //String as searchString
-				assert s.before("${r[0]}").toString() == r[1]  //GString as searchString
+				assert s.takeBefore(r[0]).toString() == r[1]                //String as searchString
+				assert s.takeBefore("${r[0]}").toString() == r[1]  //GString as searchString
 
 				if (r[0])
 				{
-					assert s.before(java.nio.CharBuffer.wrap(r[0])).toString() == r[1] //CharBuffer as searchString
-					assert s.before(new StringBuffer(r[0])).toString() == r[1]  //StringBuffer as searchString
-					assert s.before(new StringBuilder(r[0])).toString() == r[1] //StringBuilder as searchString
+					assert s.takeBefore(java.nio.CharBuffer.wrap(r[0])).toString() == r[1] //CharBuffer as searchString
+					assert s.takeBefore(new StringBuffer(r[0])).toString() == r[1]  //StringBuffer as searchString
+					assert s.takeBefore(new StringBuilder(r[0])).toString() == r[1] //StringBuilder as searchString
 				}
 			}
 		}
 
 	}
 
-	void testCharSequenceStripLeft() {
+	void testCharSequenceDropRight() {
 		def data = [ 'groovy',      // String
 					 "${'groovy'}", // GString
 					 java.nio.CharBuffer.wrap( 'groovy' ),
@@ -1929,27 +1929,11 @@ class GroovyMethodsTest extends GroovyTestCase {
 					 new StringBuilder( 'groovy' ) ]
 		data.each {
 			// Need toString() as CharBuffer.subSequence returns a java.nio.StringCharBuffer
-			assert it.stripLeft( -1 ).toString() == ''
-			assert it.stripLeft(  0 ).toString() == 'groovy'
-			assert it.stripLeft(  3 ).toString() == 'ovy'
-			assert it.stripLeft(  6 ).toString() == ''
-			assert it.stripLeft( 10 ).toString() == ''
-		}
-	}
-
-	void testCharSequenceStripRight() {
-		def data = [ 'groovy',      // String
-					 "${'groovy'}", // GString
-					 java.nio.CharBuffer.wrap( 'groovy' ),
-					 new StringBuffer( 'groovy' ),
-					 new StringBuilder( 'groovy' ) ]
-		data.each {
-			// Need toString() as CharBuffer.subSequence returns a java.nio.StringCharBuffer
-			assert it.stripRight( -1 ).toString() == ''
-			assert it.stripRight(  0 ).toString() == 'groovy'
-			assert it.stripRight(  3 ).toString() == 'gro'
-			assert it.stripRight(  6 ).toString() == ''
-			assert it.stripRight( 10 ).toString() == ''
+			assert it.dropRight( -1 ).toString() == 'groovy'
+			assert it.dropRight(  0 ).toString() == 'groovy'
+			assert it.dropRight(  3 ).toString() == 'gro'
+			assert it.dropRight(  6 ).toString() == ''
+			assert it.dropRight( 10 ).toString() == ''
 		}
 	}
 
@@ -1974,14 +1958,14 @@ class GroovyMethodsTest extends GroovyTestCase {
 
 			fromToCasesWithoutNum.each { r ->
 
-				assert s.between(r[0], r[1]).toString() == r[2]
-				assert s.between("${r[0]}", "${r[1]}").toString() == r[2]
+				assert s.takeBetween(r[0], r[1]).toString() == r[2]
+				assert s.takeBetween("${r[0]}", "${r[1]}").toString() == r[2]
 
 				if (r[0] && r[1])
 				{
-					assert s.between(CharBuffer.wrap(r[0]), CharBuffer.wrap(r[1])).toString() == r[2]
-					assert s.between(new StringBuffer(r[0]), CharBuffer.wrap(r[1])).toString() == r[2]
-					assert s.between(CharBuffer.wrap(r[0]), new StringBuilder(r[1])).toString() == r[2]
+					assert s.takeBetween(CharBuffer.wrap(r[0]), CharBuffer.wrap(r[1])).toString() == r[2]
+					assert s.takeBetween(new StringBuffer(r[0]), CharBuffer.wrap(r[1])).toString() == r[2]
+					assert s.takeBetween(CharBuffer.wrap(r[0]), new StringBuilder(r[1])).toString() == r[2]
 				}
 			}
 		}
@@ -1997,14 +1981,14 @@ class GroovyMethodsTest extends GroovyTestCase {
 
 			enclosureWithoutNum.each {r ->
 
-				assert s.between(r[0]).toString() == r[1]
-				assert s.between("${r[0]}").toString() == r[1]
+				assert s.takeBetween(r[0]).toString() == r[1]
+				assert s.takeBetween("${r[0]}").toString() == r[1]
 
 				if (r[0] && r[1])
 				{
-					assert s.between(CharBuffer.wrap(r[0])).toString() == r[1]
-					assert s.between(new StringBuffer(r[0])).toString() == r[1]
-					assert s.between(new StringBuilder(r[0])).toString() == r[1]
+					assert s.takeBetween(CharBuffer.wrap(r[0])).toString() == r[1]
+					assert s.takeBetween(new StringBuffer(r[0])).toString() == r[1]
+					assert s.takeBetween(new StringBuilder(r[0])).toString() == r[1]
 				}
 			}
 		}
@@ -2019,14 +2003,14 @@ class GroovyMethodsTest extends GroovyTestCase {
 
 			fromToCasesWithNum.each {r ->
 
-				assert s.between(r[0], r[1], r[2]).toString() == r[3]
-				assert s.between("${r[0]}", "${r[1]}", r[2]).toString() == r[3]
+				assert s.takeBetween(r[0], r[1], r[2]).toString() == r[3]
+				assert s.takeBetween("${r[0]}", "${r[1]}", r[2]).toString() == r[3]
 
 				if (r[0] && r[1])
 				{
-					assert s.between(CharBuffer.wrap(r[0]), CharBuffer.wrap(r[1]), r[2]).toString() == r[3]
-					assert s.between(new StringBuffer(r[0]), new StringBuffer(r[1]), r[2]).toString() == r[3]
-					assert s.between(new StringBuilder(r[0]), new StringBuilder(r[1]), r[2]).toString() == r[3]
+					assert s.takeBetween(CharBuffer.wrap(r[0]), CharBuffer.wrap(r[1]), r[2]).toString() == r[3]
+					assert s.takeBetween(new StringBuffer(r[0]), new StringBuffer(r[1]), r[2]).toString() == r[3]
+					assert s.takeBetween(new StringBuilder(r[0]), new StringBuilder(r[1]), r[2]).toString() == r[3]
 				}
 			}
 		}
@@ -2042,33 +2026,33 @@ class GroovyMethodsTest extends GroovyTestCase {
 
 			enclosureWithNum.each {r ->
 
-				assert s.between(r[0], r[1]).toString() == r[2]
-				assert s.between("${r[0]}", r[1]).toString() == r[2]
+				assert s.takeBetween(r[0], r[1]).toString() == r[2]
+				assert s.takeBetween("${r[0]}", r[1]).toString() == r[2]
 
 				if (r[0] && r[1])
 				{
-					assert s.between(CharBuffer.wrap(r[0]), r[1]).toString() == r[2]
-					assert s.between(new StringBuffer(r[0]), r[1]).toString() == r[2]
-					assert s.between(new StringBuilder(r[0]), r[1]).toString() == r[2]
+					assert s.takeBetween(CharBuffer.wrap(r[0]), r[1]).toString() == r[2]
+					assert s.takeBetween(new StringBuffer(r[0]), r[1]).toString() == r[2]
+					assert s.takeBetween(new StringBuilder(r[0]), r[1]).toString() == r[2]
 				}
 			}
 		}
 
-		assert 'smalltext'.between('somelargertextfrom', 'somelargertextto') == ''
-		assert 'smalltext'.between('somelargertextfrom', 'somelargertextto', 0) == ''
+		assert 'smalltext'.takeBetween('somelargertextfrom', 'somelargertextto') == ''
+		assert 'smalltext'.takeBetween('somelargertextfrom', 'somelargertextto', 0) == ''
 
 		def text2 = "name = 'some name'"
 
-		assert text2.between( "'" ) == 'some name'
-		assert text2.between( 'z' ) == ''
+		assert text2.takeBetween( "'" ) == 'some name'
+		assert text2.takeBetween( 'z' ) == ''
 
 		def text3 = "t1=10 ms, t2=100 ms"
 
-		assert text3.between( '=', ' ', 0 ) == '10'
-		assert text3.between( '=', ' ', 1 ) == '100'
-		assert text3.between( 't1', 'z' ) == ''
+		assert text3.takeBetween( '=', ' ', 0 ) == '10'
+		assert text3.takeBetween( '=', ' ', 1 ) == '100'
+		assert text3.takeBetween( 't1', 'z' ) == ''
 
-		assert 'one\ntwo\nthree'.between('\n') == 'two'
+		assert 'one\ntwo\nthree'.takeBetween('\n') == 'two'
 	}
 
 	void testCharSequenceStartsWithIgnoreCase()

@@ -3903,8 +3903,7 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * @return a CharSequence consisting of the last <code>num</code> chars,
 	 *         or else the whole CharSequence if it has less than <code>num</code> elements.
 	 */
-	public static CharSequence takeRight(CharSequence self, int num)
-    {
+	public static CharSequence takeRight(CharSequence self, int num) {
     	if (num < 0)
     		return self.subSequence(0, 0);
 
@@ -3920,8 +3919,7 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * @return a String consisting of the last <code>num</code> chars,
 	 *         or else the whole GString if it has less than <code>num</code> elements.
 	 */
-	public static String takeRight(GString self, int num)
-	{
+	public static String takeRight(GString self, int num) {
 		return (String) takeRight(self.toString(), num);
 	}
 
@@ -3942,8 +3940,7 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * @param searchString CharSequence that is searched in this CharSequence
 	 * @return CharSequence that is after the given searchString and empty string if it does not exist
 	 */
-	public static CharSequence after(CharSequence self, CharSequence searchString)
-	{
+	public static CharSequence takeAfter(CharSequence self, CharSequence searchString) {
 		if (searchString == null || searchString.toString().isEmpty() || self.length() <= searchString.length())
 			return self.subSequence(0, 0);
 
@@ -3955,15 +3952,14 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	}
 
 	/**
-	 * A GString variant of the equivalent CharSequence method {@link #after(CharSequence, CharSequence)}
+	 * A GString variant of the equivalent CharSequence method {@link #takeAfter(CharSequence, CharSequence)}
 	 *
 	 * @param self the original CharSequence
 	 * @param searchString CharSequence that is searched in this CharSequence
      * @return CharSequence that is after the given searchString and empty string if it does not exist
 	 */
-	public static String after(GString self, CharSequence searchString)
-	{
-		return (String) after(self.toString(), searchString);
+	public static String takeAfter(GString self, CharSequence searchString) {
+		return (String) takeAfter(self.toString(), searchString);
 	}
 
 	/**
@@ -3983,8 +3979,7 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * @param searchString CharSequence that is searched in this CharSequence
 	 * @return CharSequence that is before the given searchString
 	 */
-	public static CharSequence before(CharSequence self, CharSequence searchString)
-	{
+	public static CharSequence takeBefore(CharSequence self, CharSequence searchString) {
 		if (searchString == null || searchString.toString().isEmpty() || self.length() <= searchString.length())
 			return self.subSequence(0, 0);
 
@@ -3996,56 +3991,14 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	}
 
 	/**
-	 * A GString variant of the equivalent CharSequence method {@link #before(CharSequence, CharSequence)}
+	 * A GString variant of the equivalent CharSequence method {@link #takeBefore(CharSequence, CharSequence)}
 	 *
 	 * @param self the original CharSequence
 	 * @param searchString CharSequence that is searched in this CharSequence
 	 * @return CharSequence that is before the given searchString
 	 */
-	public static String before(GString self, String searchString)
-	{
-		return (String) before(self.toString(), searchString);
-	}
-
-	/**
-	 * The method returns new CharSequence after removing the left {@code num} chars. Returns empty String if the
-	 * {@code num} is greater than the length of the CharSequence
-	 *
-	 * <pre class="groovyTestCase">
-	 * def text = "groovy"
-	 *
-	 * assert text.stripLeft(  3 ) == 'ovy'
-	 * assert text.stripLeft(  6 ) == ''
-	 * assert text.stripLeft(  0 ) == 'groovy'
-	 * assert text.stripLeft( -1 ) == ''
-	 * assert text.stripLeft( 10 ) == ''
-	 *
-	 * 	</pre>
-	 *
-	 * @param self the original CharSequence
-	 * @param num number of characters
-	 * @return CharSequence after removing the left {@code num} chars and empty of the {@code num} is greater than the
-	 *         length of the CharSequence
-	 */
-	public static CharSequence stripLeft(CharSequence self, int num)
-	{
-		if (num < 0 || num >= self.length())
-			return self.subSequence(0, 0);
-
-		return takeRight(self, self.length() - num);
-	}
-
-	/**
-	 * A GString variant of the equivalent CharSequence method {@link #stripLeft(CharSequence, int)}
-	 *
-	 * @param self the original CharSequence
-	 * @param num number of characters
-	 * @return CharSequence after removing the left {@code num} chars and empty of the {@code num} is greater than the
-	 *         length of the CharSequence
-	 */
-	public static String stripLeft(GString self, int num)
-	{
-		return (String) stripLeft(self.toString(), num);
+	public static String takeBefore(GString self, String searchString) {
+		return (String) takeBefore(self.toString(), searchString);
 	}
 
 	/**
@@ -4055,11 +4008,11 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * <pre class="groovyTestCase">
 	 * def text = "groovy"
 	 *
-	 * assert text.stripRight(  3 ) == 'gro'
-	 * assert text.stripRight(  6 ) == ''
-	 * assert text.stripRight(  0 ) == 'groovy'
-	 * assert text.stripRight( -1 ) == ''
-	 * assert text.stripRight( 10 ) == ''
+	 * assert text.dropRight(  3 ) == 'gro'
+	 * assert text.dropRight(  6 ) == ''
+	 * assert text.dropRight(  0 ) == 'groovy'
+	 * assert text.dropRight( -1 ) == 'groovy'
+	 * assert text.dropRight( 10 ) == ''
 	 *
 	 * 	</pre>
 	 *
@@ -4068,25 +4021,27 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * @return CharSequence after removing the right {@code num} chars and empty of the {@code num} is greater than the
 	 *         length of the CharSequence
 	 */
-	public static CharSequence stripRight(CharSequence self, int num)
-	{
-		if (num < 0 || num >= self.length())
+	public static CharSequence dropRight(CharSequence self, int num) {
+
+	    if (num < 0)
+	        return self;
+
+		if (num >= self.length())
 			return self.subSequence(0, 0);
 
 		return take(self, self.length() - num);
 	}
 
 	/**
-	 * A GString variant of the equivalent CharSequence method {@link #stripRight(CharSequence, int)}
+	 * A GString variant of the equivalent CharSequence method {@link #dropRight(CharSequence, int)}
 	 *
 	 * @param self the original CharSequence
 	 * @param num number of characters
 	 * @return CharSequence after removing the right {@code num} chars and empty of the {@code num} is greater than the
 	 *         length of the CharSequence
 	 */
-	public static String stripRight(GString self, int num)
-	{
-		return (String) stripRight(self.toString(), num);
+	public static String dropRight(GString self, int num) {
+		return (String) dropRight(self.toString(), num);
 	}
 
 	/**
@@ -4108,10 +4063,9 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * @return the CharSequence that is in between the given two CharSequences and empty if the unavailable inputs are
 	 * 	       given
 	 *
-	 * @see #between(CharSequence, CharSequence, CharSequence, int)
+	 * @see #takeBetween(CharSequence, CharSequence, CharSequence, int)
 	 */
-	public static CharSequence between(CharSequence self, CharSequence from, CharSequence to)
-	{
+	public static CharSequence takeBetween(CharSequence self, CharSequence from, CharSequence to) {
 		if (from == null || to == null || from.length() == 0 || to.length() == 0 || from.length() > self.length() || to.length() > self.length())
 			return self.subSequence(0, 0);
 
@@ -4147,15 +4101,14 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * @param self the original CharSequence
 	 * @param enclosure Enclosure String
 	 * @return characters between the 2 subsequent {@code enclosure} strings
-	 * @see #between(CharSequence, CharSequence, int)
+	 * @see #takeBetween(CharSequence, CharSequence, int)
 	 */
-	public static CharSequence between(CharSequence self, CharSequence enclosure)
-	{
-		return between(self, enclosure, enclosure);
+	public static CharSequence takeBetween(CharSequence self, CharSequence enclosure) {
+		return takeBetween(self, enclosure, enclosure);
 	}
 
 	/**
-	 * A GString variant of the equivalent CharSequence method {@link #between(CharSequence, CharSequence, CharSequence)}
+	 * A GString variant of the equivalent CharSequence method {@link #takeBetween(CharSequence, CharSequence, CharSequence)}
 	 *
 	 * @param self the original CharSequence
 	 * @param from beginning of search
@@ -4163,25 +4116,23 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * @return the CharSequence that is in between the given two CharSequences and empty if the unavailable inputs are
 	 * 	       given
 	 */
-	public static String between(GString self, CharSequence from, CharSequence to)
-	{
-		return (String) between(self.toString(), from, to);
+	public static String takeBetween(GString self, CharSequence from, CharSequence to) {
+		return (String) takeBetween(self.toString(), from, to);
 	}
 
 	/**
-	 * A GString variant of the equivalent CharSequence method {@link #between(CharSequence, CharSequence)}
+	 * A GString variant of the equivalent CharSequence method {@link #takeBetween(CharSequence, CharSequence)}
 	 *
 	 * @param self the original GString
 	 * @param enclosure Enclosure String
 	 * @return characters between the 2 subsequent {@code enclosure} strings
 	 */
-	public static String between(GString self, CharSequence enclosure)
-	{
-		return (String) between(self.toString(), enclosure);
+	public static String takeBetween(GString self, CharSequence enclosure) {
+		return (String) takeBetween(self.toString(), enclosure);
 	}
 
 	/**
-	 * Returns the CharSequence that is in between the given the nth (specified by item) pair of
+	 * Returns the CharSequence that is in between the given the nth (specified by occurrence) pair of
 	 * {@code from} and {@code to} CharSequences and empty if the unavailable inputs are given.
 	 *
 	 * <pre class="groovyTestCase">
@@ -4195,25 +4146,24 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * @param self the original CharSequence
 	 * @param from beginning of search
 	 * @param to end of search
-	 * @param item nth item that is to be returned. 0 represents first one
-	 * @return the CharSequence that is in between the given the nth (specified by item) pair of
+	 * @param occurrence nth occurrence that is to be returned. 0 represents first one
+	 * @return the CharSequence that is in between the given the nth (specified by occurrence) pair of
 	 * 	 {@code from} and {@code to} CharSequences and empty if the unavailable inputs are given.
 	 *
-	 * @see #between(CharSequence, CharSequence, CharSequence)
+	 * @see #takeBetween(CharSequence, CharSequence, CharSequence)
 	 */
-	public static CharSequence between(CharSequence self, CharSequence from, CharSequence to, int item)
-	{
-		if (from == null || to == null || from.length() > self.length() || to.length() > self.length() || item < 0)
+	public static CharSequence takeBetween(CharSequence self, CharSequence from, CharSequence to, int occurrence) {
+		if (from == null || to == null || from.length() > self.length() || to.length() > self.length() || occurrence < 0)
 			return self.subSequence(0, 0);
 
-		if (item == 0)
-			return between(self, from, to); //better performant by reducing regex usage
+		if (occurrence == 0)
+			return takeBetween(self, from, to); //better performant by reducing regex usage
 
 		Pattern pat = Pattern.compile(from + "(.*?)" + to);
 
 		Matcher matcher = pat.matcher(self);
 
-		for (int i = 0; i < item; i++)
+		for (int i = 0; i < occurrence; i++)
 			matcher.find();
 
 		if (matcher.find())
@@ -4223,7 +4173,7 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	}
 
 	/**
-	 * Method to take the characters between nth (specified by item) pair of @code enclosure} strings
+	 * Method to take the characters between nth (specified by occurrence) pair of @code enclosure} strings
 	 *
 	 * <pre class="groovyTestCase">
      * def text = "t1='10' ms, t2='100' ms"
@@ -4235,43 +4185,40 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 *
 	 * @param self the original CharSequence
 	 * @param enclosure Enclosure String
-     * @param item nth occurrence being returned
+     * @param occurrence nth occurrence being returned
 	 * @return characters between the nth occurrence of pair of {@code enclosure} strings
-	 * @see #between(CharSequence, CharSequence, int)
+	 * @see #takeBetween(CharSequence, CharSequence, int)
 	 */
-	public static CharSequence between(CharSequence self, CharSequence enclosure, int item)
-	{
-		return between(self, enclosure, enclosure, item);
+	public static CharSequence takeBetween(CharSequence self, CharSequence enclosure, int occurrence) {
+		return takeBetween(self, enclosure, enclosure, occurrence);
 	}
 
     /**
      * A GString variant of the equivalent CharSequence method
-     * {@link #between(CharSequence, CharSequence, CharSequence, int)}
+     * {@link #takeBetween(CharSequence, CharSequence, CharSequence, int)}
      *
      * @param self the original CharSequence
      * @param from beginning of search
      * @param to end of search
-     * @param item nth item that is to be returned. 0 represents first one
-     * @return the CharSequence that is in between the given the nth (specified by item) pair of
+     * @param occurrence nth occurrence that is to be returned. 0 represents first one
+     * @return the CharSequence that is in between the given nth (specified by occurrence) pair of
      * 	 {@code from} and {@code to} CharSequences and empty if the unavailable inputs are given.
      */
-	public static String between(GString self, CharSequence from, CharSequence to, int item)
-	{
-		return (String) between(self.toString(), from, to, item);
+	public static String takeBetween(GString self, CharSequence from, CharSequence to, int occurrence) {
+		return (String) takeBetween(self.toString(), from, to, occurrence);
 	}
 
     /**
      * A GString variant of the equivalent CharSequence method
-     * {@link #between(CharSequence, CharSequence, int)}
+     * {@link #takeBetween(CharSequence, CharSequence, int)}
      *
      * @param self the original CharSequence
      * @param enclosure Enclosure String
-     * @param item nth occurrence being returned
+     * @param occurrence nth occurrence being returned
      * @return characters between the nth occurrence of pair of {@code enclosure} strings
      */
-	public static String between(GString self, CharSequence enclosure, int item)
-	{
-		return between(self, enclosure, enclosure, item);
+	public static String takeBetween(GString self, CharSequence enclosure, int occurrence) {
+		return takeBetween(self, enclosure, enclosure, occurrence);
 	}
 
     /**
@@ -4282,27 +4229,13 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
      * @return  {@code true} if the character sequence represented by the argument is a prefix of this CharSequence
      *          ignoring the case considerations. {@code false} otherwise. Returns false if the argument is null
      */
-	public static boolean startsWithIgnoreCase(CharSequence self, CharSequence searchString)
-	{
+	public static boolean startsWithIgnoreCase(CharSequence self, CharSequence searchString) {
 		if (searchString == null || searchString.length() == 0 || self.length() < searchString.length())
 			return false;
 
 		String s = take(self.toString(), searchString.length()).toString();
 
 		return s.equalsIgnoreCase(searchString.toString());
-	}
-
-    /**
-     * A GString variant of {@link #startsWithIgnoreCase(CharSequence, CharSequence)}
-     *
-     * @param self the original CharSequence
-     * @param searchString CharSequence being checked against this
-     * @return  {@code true} if the character sequence represented by the argument is a prefix of this CharSequence
-     *          ignoring the case considerations. {@code false} otherwise. Returns false if the argument is null
-     */
-	public static boolean startsWithIgnoreCase(GString self, CharSequence searchString)
-	{
-		return startsWithIgnoreCase(self.toString(), searchString);
 	}
 
     /**
@@ -4313,27 +4246,13 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
      * @return  {@code true} if the character sequence represented by the argument is a suffix of this CharSequence
      *          ignoring the case considerations. {@code false} otherwise. Returns false if the argument is null
      */
-	public static boolean endsWithIgnoreCase(CharSequence self, CharSequence searchString)
-	{
+	public static boolean endsWithIgnoreCase(CharSequence self, CharSequence searchString) {
 		if (searchString == null || searchString.length() == 0 || self.length() < searchString.length())
 			return false;
 
 		String s = takeRight(self.toString(), searchString.length()).toString();
 
 		return s.equalsIgnoreCase(searchString.toString());
-	}
-
-    /**
-     * A GString variant of {@link #endsWithIgnoreCase(CharSequence, CharSequence)}
-     *
-     * @param self the original CharSequence
-     * @param searchString CharSequence bring checked against this
-     * @return  {@code true} if the character sequence represented by the argument is a suffix of this CharSequence
-     *          ignoring the case considerations. {@code false} otherwise. Returns false if the argument is null
-     */
-	public static boolean endsWithIgnoreCase(GString self, CharSequence searchString)
-	{
-		return endsWithIgnoreCase(self.toString(), searchString);
 	}
 
     /**
@@ -4344,24 +4263,10 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
      * @return  {@code true} if the character sequence represented by the argument exists in this CharSequence
      *          ignoring the case considerations. {@code false} otherwise. Returns false if the argument is null
      */
-	public static boolean containsIgnoreCase(CharSequence self, CharSequence searchString)
-	{
+	public static boolean containsIgnoreCase(CharSequence self, CharSequence searchString) {
 		if (searchString == null || searchString.length() == 0 || self.length() < searchString.length())
 			return false;
 
 		return self.toString().toLowerCase().contains(searchString.toString().toLowerCase());
-	}
-
-    /**
-     * A GString variant of {@link #containsIgnoreCase(CharSequence, CharSequence)}
-     *
-     * @param self the original CharSequence
-     * @param searchString CharSequence being checked against this
-     * @return  {@code true} if the character sequence represented by the argument exists in this CharSequence
-     *          ignoring the case considerations. {@code false} otherwise. Returns false if the argument is null
-     */
-	public static boolean containsIgnoreCase(GString self, String searchString)
-	{
-		return containsIgnoreCase(self.toString(), searchString);
 	}
 }
