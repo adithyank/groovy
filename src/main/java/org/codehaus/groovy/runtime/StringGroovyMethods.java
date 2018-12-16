@@ -3930,10 +3930,10 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * <pre class="groovyTestCase">
 	 * def text = "Groovy development. Groovy team"
 	 * assert text.takeAfter( 'Groovy' )           == ' development. Groovy team'
-	 * assert text.after( 'team' )             == ''
-	 * assert text.after( '' )                 == ''
-	 * assert text.after( 'Unavailable text' ) == ''
-	 * assert text.after( null )               == ''
+	 * assert text.takeAfter( 'team' )             == ''
+	 * assert text.takeAfter( '' )                 == ''
+	 * assert text.takeAfter( 'Unavailable text' ) == ''
+	 * assert text.takeAfter( null )               == ''
 	 * </pre>
 	 *
 	 * @param self the original CharSequence
@@ -3969,10 +3969,10 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * <pre class="groovyTestCase">
 	 * def text = "Groovy development. Groovy team"
 	 *
-	 * assert text.before( ' Groovy ' )         == 'Groovy development.'
-	 * assert text.before( ' ' )                == 'Groovy'
-	 * assert text.before( 'Unavailable text' ) == ''
-	 * assert text.before( null )               == ''
+	 * assert text.takeBefore( ' Groovy ' )         == 'Groovy development.'
+	 * assert text.takeBefore( ' ' )                == 'Groovy'
+	 * assert text.takeBefore( 'Unavailable text' ) == ''
+	 * assert text.takeBefore( null )               == ''
 	 * </pre>
 	 *
 	 * @param self the original CharSequence
@@ -4051,9 +4051,9 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * <pre class="groovyTestCase">
 	 * def text = "Groovy"
 	 *
-	 * assert text.between( 'r', 'v' ) == 'oo'
-	 * assert text.between( 'r', 'z' ) == ''
-	 * assert text.between( 'a', 'r' ) == ''
+	 * assert text.takeBetween( 'r', 'v' ) == 'oo'
+	 * assert text.takeBetween( 'r', 'z' ) == ''
+	 * assert text.takeBetween( 'a', 'r' ) == ''
 	 *
 	 * 	</pre>
 	 *
@@ -4093,8 +4093,8 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * <pre class="groovyTestCase">
 	 * def text = "name = 'some name'"
 	 *
-	 * assert text.between( "'" ) == 'some name'
-	 * assert text.between( 'z' ) == ''
+	 * assert text.takeBetween( "'" ) == 'some name'
+	 * assert text.takeBetween( 'z' ) == ''
 	 *
 	 * </pre>
 	 *
@@ -4138,9 +4138,9 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * <pre class="groovyTestCase">
 	 * def text = "t1=10 ms, t2=100 ms"
 	 *
-	 * assert text.between( '=', ' ', 0 ) == '10'
-	 * assert text.between( '=', ' ', 1 ) == '100'
-	 * assert text.between( 't1', 'z' ) == ''
+	 * assert text.takeBetween( '=', ' ', 0 ) == '10'
+	 * assert text.takeBetween( '=', ' ', 1 ) == '100'
+	 * assert text.takeBetween( 't1', 'z' ) == ''
 	 * </pre>
 	 *
 	 * @param self the original CharSequence
@@ -4178,9 +4178,9 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 * <pre class="groovyTestCase">
      * def text = "t1='10' ms, t2='100' ms"
      *
-     * assert text.between( "'", 0 ) == '10'
-     * assert text.between( "'", 1 ) == '100'
-     * assert text.between( "'", 2 ) == ''
+     * assert text.takeBetween( "'", 0 ) == '10'
+     * assert text.takeBetween( "'", 1 ) == '100'
+     * assert text.takeBetween( "'", 2 ) == ''
 	 * </pre>
 	 *
 	 * @param self the original CharSequence
