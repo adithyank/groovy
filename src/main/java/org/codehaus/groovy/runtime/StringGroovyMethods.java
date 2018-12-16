@@ -3929,7 +3929,7 @@ public class StringGroovyMethods extends DefaultGroovyMethodsSupport {
 	 *
 	 * <pre class="groovyTestCase">
 	 * def text = "Groovy development. Groovy team"
-	 * assert text.after( 'Groovy' )           == ' development. Groovy team'
+	 * assert text.takeAfter( 'Groovy' )           == ' development. Groovy team'
 	 * assert text.after( 'team' )             == ''
 	 * assert text.after( '' )                 == ''
 	 * assert text.after( 'Unavailable text' ) == ''
