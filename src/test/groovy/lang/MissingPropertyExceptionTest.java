@@ -16,16 +16,19 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
+package groovy.lang;
 
-ext {
-    jacksondataformatyamlVersion = '2.9.8'
-    jacksondatabindVersion = '2.9.8'
-}
+import junit.framework.TestCase;
 
-dependencies {
-    compile rootProject
-    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksondataformatyamlVersion"
-    compile "com.fasterxml.jackson.core:jackson-databind:$jacksondatabindVersion"
-    compile project(':groovy-json')
-    testCompile project(':groovy-test')
+/**
+ * Provides unit tests for the <code>MissingPropertyException</code> class.
+ */
+public class MissingPropertyExceptionTest extends TestCase {
+
+    public void testNullMessage() {
+        Throwable mpe = new MissingPropertyException(null);
+        assertNull(mpe.getMessage());
+        assertEquals("groovy.lang.MissingPropertyException", mpe.toString());
+    }
+
 }
